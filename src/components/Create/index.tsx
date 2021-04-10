@@ -1,27 +1,40 @@
 import React, { VFC } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import { useRecoilState } from 'recoil';
 
 import Layout from '../Layout';
 import Input from '../Input';
+import { recordsState } from '../../store/atoms/Records';
 
 const styles = StyleSheet.create({
   content: {
     padding: 20,
   },
-  price: {
-    fontSize: 48,
-    fontWeight: '900',
-    marginLeft: 'auto',
-  },
 });
 
-const List: VFC = () => (
-  <Layout title="入力">
-    <View style={styles.content}>
-      <Text style={styles.price}>￥0</Text>
-      <Input addEet={() => ''} />
-    </View>
-  </Layout>
-);
+const List: VFC = () => {
+  const [records, setRecords] = useRecoilState(recordsState);
+
+  const addRecord = (price: number, text: string) => {
+    const date = new Date();
+    const yymmdd = `${date.getFullYear()}/${date.getMonth()}/${date.getDate()}`;
+    const newEet = records.slice().concat({
+      id: Date.now().toString(),
+      price,
+      text,
+      like: false,
+      date: yymmdd,
+    });
+    setRecords(newEet);
+  };
+
+  return (
+    <Layout title="入力">
+      <View style={styles.content}>
+        <Input addRecord={addRecord} />
+      </View>
+    </Layout>
+  );
+};
 
 export default List;

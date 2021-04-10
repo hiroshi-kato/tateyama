@@ -3,10 +3,11 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
+import { RecoilRoot } from 'recoil';
 
 import List from './components/List';
 import Create from './components/Create';
-import firebaseInit from './utils/firebaseInit';
+// import firebaseInit from './utils/firebaseInit';
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 const Tab = createBottomTabNavigator();
@@ -36,15 +37,14 @@ const TabNavigator = () => (
   </Tab.Navigator>
 );
 
-const App = () => {
-  firebaseInit();
+const App = () => (
+  // firebaseInit();
 
-  return (
+  <RecoilRoot>
     <NavigationContainer>
       <TabNavigator />
     </NavigationContainer>
-  );
-};
-
+  </RecoilRoot>
+);
 export default App;
 registerRootComponent(App);

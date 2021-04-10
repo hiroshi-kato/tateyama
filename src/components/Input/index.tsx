@@ -8,18 +8,28 @@ import {
 } from 'react-native';
 
 type InputProps = {
-  addEet: (text: string) => void;
+  addRecord: (price: number, text: string) => void;
 };
 
-const Input: VFC<InputProps> = ({ addEet }) => {
+const Input: VFC<InputProps> = ({ addRecord }) => {
+  const [price, setPrice] = useState(0);
   const [text, setText] = useState('');
   const onPress = () => {
-    addEet(text);
+    addRecord(price, text);
     setText('');
   };
 
   return (
     <View>
+      <TextInput
+        keyboardType="number-pad"
+        style={styles.price}
+        onChangeText={(_text) => {
+          setPrice(Number(_text));
+        }}
+        value={price.toString()}
+      />
+
       <TextInput
         style={styles.input}
         onChangeText={(_text) => setText(_text)}
@@ -38,6 +48,12 @@ const Input: VFC<InputProps> = ({ addEet }) => {
 };
 
 const styles = StyleSheet.create({
+  price: {
+    fontSize: 48,
+    fontWeight: '900',
+    marginLeft: 'auto',
+  },
+
   input: {
     height: 200,
     borderColor: '#D3D3D3',
