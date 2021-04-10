@@ -1,29 +1,50 @@
 import { registerRootComponent } from 'expo';
-import { StatusBar } from 'expo-status-bar';
-import React, { useState, VFC } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React from 'react';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { NavigationContainer } from '@react-navigation/native';
+import { Ionicons } from '@expo/vector-icons';
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+import List from './components/List';
+import Create from './components/Create';
+import firebaseInit from './utils/firebaseInit';
 
-const App: VFC = () => {
-  const [count] = useState(0);
+// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+const Tab = createBottomTabNavigator();
+const TabNavigator = () => (
+  <Tab.Navigator
+    screenOptions={({ route }) => ({
+      tabBarIcon: ({ focused, color, size }) => {
+        let iconName;
+
+        if (route.name === '入力') {
+          iconName = focused ? 'brush' : 'brush-outline';
+        } else if (route.name === '一覧') {
+          iconName = focused ? 'menu' : 'menu-outline';
+        }
+
+        // You can return any component that you like here!
+        return <Ionicons name={iconName} size={size} color={color} />;
+      },
+    })}
+    tabBarOptions={{
+      activeTintColor: '#E4A400',
+      inactiveTintColor: 'gray',
+    }}
+  >
+    <Tab.Screen name="一覧" component={List} />
+    <Tab.Screen name="入力" component={Create} />
+  </Tab.Navigator>
+);
+
+const App = () => {
+  firebaseInit();
 
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <Text>{count}</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <TabNavigator />
+    </NavigationContainer>
   );
 };
 
 export default App;
-
 registerRootComponent(App);
