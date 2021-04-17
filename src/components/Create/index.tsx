@@ -1,10 +1,9 @@
 import React, { VFC } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { useRecoilState } from 'recoil';
 
 import Layout from '../Layout';
 import Input from '../Input';
-import { recordsState } from '../../store/atoms/Records';
+import { useRecords } from '../../hooks/useRecords';
 
 const styles = StyleSheet.create({
   content: {
@@ -13,7 +12,7 @@ const styles = StyleSheet.create({
 });
 
 const List: VFC = () => {
-  const [records, setRecords] = useRecoilState(recordsState);
+  const { records, setRecords } = useRecords();
 
   const addRecord = (price: number, text: string) => {
     const date = new Date();

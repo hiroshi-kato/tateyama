@@ -1,10 +1,10 @@
-import React, { VFC } from 'react';
+import React, { useEffect, VFC } from 'react';
 import { StyleSheet, View, FlatList } from 'react-native';
-import { useRecoilState } from 'recoil';
 
 import EetBox from '../Eet';
 import Layout from '../Layout';
-import { recordsState } from '../../store/atoms/Records';
+import { useRecords } from '../../hooks/useRecords';
+import getRecords from '../../db/getRecords';
 
 const styles = StyleSheet.create({
   content: {
@@ -18,7 +18,15 @@ const styles = StyleSheet.create({
 });
 
 const List: VFC = () => {
-  const [records, setRecords] = useRecoilState(recordsState);
+  const { records, setRecords } = useRecords();
+
+  useEffect(() => {
+    const getNewRecords = async () => {
+      const newRecords = await getRecords();
+      setRecords(newRecords);
+    };
+    void getNewRecords();
+  }, []);
 
   const onLike = (index: number) => {
     const newEet = records.slice().map((elm, i) => {
