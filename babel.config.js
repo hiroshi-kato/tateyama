@@ -10,6 +10,17 @@ module.exports = function (api) {
           extensions: ['.ts', '.tsx', '.mjs', '.js', '.jsx'],
         },
       ],
+      [
+        'dotenv-import',
+        {
+          moduleName: '@env',
+          path: '.env',
+          blacklist: null,
+          whitelist: null,
+          safe: false,
+          allowUndefined: false,
+        },
+      ],
     ],
   };
 };
